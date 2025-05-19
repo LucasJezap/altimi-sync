@@ -15,6 +15,29 @@ It supports:
 You can build the application from source:
 
 ```bash
-git clone https://github.com/your-org/altimi-sync.git
+git clone https://github.com/LucasJezap/altimi-sync.git
 cd altimi-sync
 go build -o altimi-sync main.go
+```
+
+## 📌 Examples
+
+### 🔄 Print help
+
+```bash
+./altimi-sync -h
+./altimi-sync --help
+```
+
+### 🔄 Basic sync from source to target
+
+```bash
+./altimi-sync ./source ./target
+```
+
+### 🔄 Basic sync from source to target, delete files that do not exist in source
+
+```bash
+./altimi-sync -d ./source ./target
+./altimi-sync --delete-missing ./source ./target
+```
