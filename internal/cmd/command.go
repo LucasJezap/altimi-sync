@@ -10,6 +10,8 @@ import (
 	"path/filepath"
 )
 
+var exitFunc = os.Exit
+
 type Command struct {
 	sourceDirectory   string
 	targetDirectory   string
@@ -29,13 +31,13 @@ func NewCommand() *Command {
 
 	if command.helpFlag.IsSet() {
 		flags.PrintHelpMessage()
-		os.Exit(0)
+		exitFunc(0)
 	}
 
 	args := flag.Args()
 	if len(args) != 2 {
 		_, _ = fmt.Fprintln(os.Stderr, "Error: source and destination must be specified")
-		os.Exit(1)
+		exitFunc(1)
 	}
 
 	command.sourceDirectory = args[0]

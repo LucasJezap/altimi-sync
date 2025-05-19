@@ -41,3 +41,16 @@ go build -o altimi-sync main.go
 ./altimi-sync -d ./source ./target
 ./altimi-sync --delete-missing ./source ./target
 ```
+
+## 🧪 Tests
+
+### 🔄 Print help
+
+```bash
+# normal 
+go test ./...
+# verbose
+go test -v ./...
+# with code coverage
+go test -cover ./...
+```
