@@ -16,12 +16,15 @@ func resetFlags() {
 func captureOutput(f func()) string {
 	r, w, _ := os.Pipe()
 	stdout := os.Stdout
+	stderr := os.Stderr
 	os.Stdout = w
+	os.Stderr = w
 
 	f()
 
 	_ = w.Close()
 	os.Stdout = stdout
+	os.Stderr = stderr
 
 	out, _ := io.ReadAll(r)
 	return string(out)
@@ -53,7 +56,9 @@ func TestNewCommandMissingArgs(t *testing.T) {
 		}
 	}()
 
-	NewCommand()
+	_ = captureOutput(func() {
+		NewCommand()
+	})
 }
 
 func TestNewCommandHelpFlag(t *testing.T) {

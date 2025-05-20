@@ -73,6 +73,7 @@ func (c *Command) Run() {
 		needsSync := true
 		isOverwrite := true
 		destinationInfo, err := os.Stat(targetPath)
+		fmt.Println(err)
 		if err != nil {
 			if errors.Is(err, os.ErrPermission) {
 				_, _ = fmt.Fprintf(os.Stderr, "\033[31m🚨 [ACCESS DENIED] %s: %v\033[0m\n", sourcePath, err)
@@ -96,7 +97,12 @@ func (c *Command) Run() {
 		if needsSync {
 			_ = os.MkdirAll(filepath.Dir(targetPath), 0755)
 			if err := lib.CopyFile(sourcePath, targetPath, info.ModTime(), isOverwrite); err != nil {
-				_, _ = fmt.Fprintf(os.Stderr, "\033[31m❌ [ERROR] Failed to copy %s to %s: %v\033[0m\n", sourcePath, targetPath, err)
+				if errors.Is(err, os.ErrPermission) {
+					_, _ = fmt.Fprintf(os.Stderr, "\033[31m🚨 [ACCESS DENIED] %s: %v\033[0m\n", targetPath, err)
+				} else {
+					_, _ = fmt.Fprintf(os.Stderr, "\033[31m❌ [ERROR] Failed to copy %s to %s: %v\033[0m\n", sourcePath, targetPath, err)
+				}
+				return nil
 			}
 		}
 
